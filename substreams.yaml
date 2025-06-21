@@ -1,0 +1,31 @@
+specVersion: v0.1.0
+package:
+  name: meteora_dlmm_v1_0_1
+  version: v1.0.1
+
+imports:
+  solana: https://spkg.io/streamingfast/solana-common-v0.3.0.spkg
+
+protobuf:
+  files:
+    - proto/main.proto
+  importPaths:
+    - ./proto
+
+binaries:
+  default:
+    type: wasm/rust-v1
+    file: ./target/wasm32-unknown-unknown/release/substreams_solana_meteora_dlmm.wasm
+
+modules:
+  - name: map_block
+    kind: map
+    initialBlock: 200000000
+    inputs:
+      - map: solana:blocks_without_votes
+    output:
+      type: proto:sf.solana.meteora_dlmm.v1.Output
+    blockFilter:
+      module: solana:program_ids_without_votes
+      query:
+        string: program:LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo
